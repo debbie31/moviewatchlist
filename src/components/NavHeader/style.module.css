@@ -1,0 +1,22 @@
+.navheader {
+  color: rgb(39, 170, 180);
+  background-color: #202828;
+  width: 100%;
+  cursor: pointer;
+  font-family: Verdana;
+  justify-content: center;
+  font-size: 5vw;
+  padding-bottom: 15px;
+  padding-top: 15px;
+  z-index: 100;
+  position: fixed;
+  display: flex;
+  text-transform: uppercase;
+  box-shadow: 5px 8px 10px rgb(151, 149, 149);
+}
+
+@media (max-width: 1024px) {
+  .navheader {
+    font-size: 5vw;
+  }
+}

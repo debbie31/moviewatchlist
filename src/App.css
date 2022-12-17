@@ -1,0 +1,32 @@
+* {
+  scroll-behavior: smooth;
+}.app {
+  color: #a6ced5;
+  background-color: #354141;
+  padding-bottom: 70px;
+  padding-top: 100px;
+  min-height: 100vh;
+}
+
+@media (max-width: 700px) {
+  .app {
+    padding-top: 70px;
+  }
+}
+
+.pageTitle {
+  text-transform: uppercase;
+  display: flex;
+  justify-content:left;
+  font-family: sans-serif;
+  font-size: 2vw;     
+  padding: 4px;
+  border-radius: 50px;
+  color: #ffffff;
+}
+
+@media (max-width: 1024px) {
+  .pageTitle {
+    font-size: 4vw;
+  }
+}
