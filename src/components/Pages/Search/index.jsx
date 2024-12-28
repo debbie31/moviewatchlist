@@ -29,9 +29,9 @@ const Search = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearchText(searchText);
-    }, 100); 
+    }, 500); // Adjust the debounce delay as needed
 
-    return () => clearTimeout(timer);
+    return () => clearTimeout(timer); // Clear the previous timeout if the user types again
   }, [searchText]);
 
   const fetchSearch = async () => {
@@ -45,7 +45,7 @@ const Search = () => {
         setContent(data.results);
         setNumOfPages(data.total_pages);
       } else {
-        setContent([]);
+        setContent([]); // Clear content if no results
         setNumOfPages(0);
       }
     } catch (error) {
@@ -94,11 +94,11 @@ const Search = () => {
 
       <div className={style.search}>
         {content.length === 0 ? (
-          <p>No results found</p> 
+          <p>No results found</p> // Display message when no results
         ) : (
           content.map((c) => (
             <SingleContent
-              key={c.id} 
+              key={c.id} // Ensure you have a key for each item
               poster={c.poster_path}
               title={c.title || c.name}
               date={c.first_air_date || c.release_date}
