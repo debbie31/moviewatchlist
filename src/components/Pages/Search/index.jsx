@@ -1,17 +1,10 @@
-import SearchOutlined from '@mui/icons-material/SearchOutlined';
-import {
-  Button,
-  createTheme,
-  Tabs,
-  Tab,
-  TextField,
-  ThemeProvider,
-} from '@mui/material';
 import { useEffect, useState } from 'react';
+import { Button, createTheme, Tabs, Tab, TextField, ThemeProvider } from '@mui/material';
+import SearchOutlined from '@mui/icons-material/SearchOutlined';
+import axios from 'axios';
 import SingleContent from '../../SingleContent';
 import CustomPagination from '../../CustomPagination';
 import style from './style.module.css';
-import axios from 'axios';
 
 const API_KEY = '87b8b75ac124397ba90935e5580b950c';
 
@@ -21,6 +14,7 @@ const Search = () => {
   const [page, setPage] = useState(1);
   const [content, setContent] = useState([]);
   const [numOfPages, setNumOfPages] = useState();
+  const [debouncedSearchText, setDebouncedSearchText] = useState(searchText);
 
   const darkTheme = createTheme({
     palette: {
@@ -31,21 +25,39 @@ const Search = () => {
     },
   });
 
+  // Debounce function
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchText(searchText);
+    }, 100); 
+
+    return () => clearTimeout(timer);
+  }, [searchText]);
+
   const fetchSearch = async () => {
     try {
       const { data } = await axios.get(
-        `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&query=${searchText}&page=${page}&include_adult=false`
+        `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&query=${debouncedSearchText}&page=${page}&include_adult=false`
       );
-      setContent(data.results);
-      setNumOfPages(data.total_pages);
+      console.log('Fetched Data:', data); // Debugging: Check API response
+
+      if (data.results && data.results.length > 0) {
+        setContent(data.results);
+        setNumOfPages(data.total_pages);
+      } else {
+        setContent([]);
+        setNumOfPages(0);
+      }
     } catch (error) {
-      console.error(error);
+      console.error('Error fetching search data:', error);
     }
   };
+
   useEffect(() => {
-    window.scroll(0, 0);
-    fetchSearch();
-  }, [type, page]);
+    if (debouncedSearchText) {
+      fetchSearch();
+    }
+  }, [debouncedSearchText, type, page]);
 
   return (
     <div>
@@ -53,44 +65,49 @@ const Search = () => {
         <div className={style.search}>
           <TextField
             style={{ flex: 1, backgroundColor: '#b1b6ba', color: 'white' }}
-            className='searchBox'
-            label='Search'
-            variant='filled'
+            className="searchBox"
+            label="Search"
+            variant="filled"
             onChange={(e) => setSearchText(e.target.value)}
           />
           <Button
-            variant='contained'
+            variant="contained"
             style={{ marginLeft: 10 }}
             onClick={fetchSearch}
           >
-            <SearchOutlined fontSize='large' 
-            style={{ color: 'black' }}/>
+            <SearchOutlined fontSize="large" style={{ color: 'black' }} />
           </Button>
         </div>
         <Tabs
           value={type}
-          indicatorColor='primary'
-          textColor='primary'
+          indicatorColor="primary"
+          textColor="primary"
           onChange={(e) => {
             setType(e.target.value);
             setPage(1);
           }}
           style={{ paddingBottom: 5 }}
         >
-          <Tab style={{ width: '100%' }} label='Search Movies' />
+          <Tab style={{ width: '100%' }} label="Search Movies" />
         </Tabs>
       </ThemeProvider>
+
       <div className={style.search}>
-        {content &&
+        {content.length === 0 ? (
+          <p>No results found</p> 
+        ) : (
           content.map((c) => (
             <SingleContent
+              key={c.id} 
               poster={c.poster_path}
               title={c.title || c.name}
               date={c.first_air_date || c.release_date}
-              media_type='movie'
+              media_type="movie"
             />
-          ))}
+          ))
+        )}
       </div>
+
       {numOfPages > 1 && (
         <CustomPagination setPage={setPage} numOfPages={numOfPages} />
       )}

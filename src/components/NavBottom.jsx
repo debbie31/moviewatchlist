@@ -21,12 +21,13 @@ export default function SimpleBottomNavigation() {
   return (
     <Box
       sx={{
-        color: 'white',
         width: '100%',
         position: 'fixed',
         bottom: 0,
-        backgroundColor: 'rgb(28, 33, 33)',
+        left: 0,
         zIndex: 100,
+        backgroundColor: '#202828',
+        boxShadow: '0 -4px 6px rgba(0, 0, 0, 0.1)',
       }}
     >
       <BottomNavigation
@@ -38,17 +39,17 @@ export default function SimpleBottomNavigation() {
         }}
       >
         <BottomNavigationAction
-          style={{ color: 'white' }}
+          style={{ color: 'rgb(39, 170, 180)' }}
           label='Trending'
           icon={<WhatshotOutlinedIcon />}
         />
         <BottomNavigationAction
-          style={{ color: 'white' }}
+          style={{ color: 'rgb(39, 170, 180)' }}
           label='Movies'
           icon={<MovieOutlinedIcon />}
         />
         <BottomNavigationAction
-          style={{ color: 'white' }}
+          style={{ color: 'rgb(39, 170, 180)' }}
           label='Search'
           icon={<SearchOutlinedIcon />}
         />
