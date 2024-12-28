@@ -1,5 +1,7 @@
 # Movie Watchlist
 
+live Demo: https://moviewatchlist-ten.vercel.app/
+
 This project is a Movie Watchlist web application built using **React.js** and **The Movie Database (TMDb) API**. It allows users to search for movies, view trending movies, and maintain a personal movie watchlist.
 
 ## Features
@@ -31,5 +33,4 @@ This project is a Movie Watchlist web application built using **React.js** and *
 git clone https://github.com/debbie31/moviewatchlist.git
 
 
-live Demo: https://moviewatchlist-ten.vercel.app/
 
