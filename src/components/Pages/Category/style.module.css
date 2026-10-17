@@ -1,0 +1,17 @@
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 8px 4px;
+}
+
+.loading {
+  text-align: center;
+  color: #b3b3b3;
+}
+
+.error {
+  color: #e50914;
+  text-align: center;
+  margin: 10px 0;
+}

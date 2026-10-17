@@ -1,38 +1,7 @@
-.trending {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  gap: 20px;
+.home {
+  padding-bottom: 40px;
 }
 
-.trending > div {
-  flex-basis: 22%;
-  margin-bottom: 20px;
-}
-
-@media (max-width: 600px) {
-  .trending > div {
-    flex-basis: 100%; 
-    margin-bottom: 15px;
-  }
-}
-
-@media (max-width: 900px) {
-  .trending > div {
-    flex-basis: 45%; 
-  }
-}
-
-@media (min-width: 900px) {
-  .trending > div {
-    flex-basis: 22%; 
-  }
-}
-
-.pageTitle {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-  display: block;
-  text-align: center;
+.rows {
+  padding: 0 4%;
 }

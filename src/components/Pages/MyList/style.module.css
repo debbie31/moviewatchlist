@@ -1,0 +1,43 @@
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 8px 4px;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 80px 16px;
+  text-align: center;
+  color: #b3b3b3;
+}
+
+.empty p {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.hint {
+  font-size: 0.95rem !important;
+  color: #777;
+}
+
+.browse {
+  margin-top: 12px;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 24px;
+  background-color: #e50914;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.browse:hover {
+  background-color: #f40612;
+}

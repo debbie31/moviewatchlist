@@ -2,32 +2,24 @@
   margin: 15px 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 10px;
-  padding: 10px;
-  flex-wrap: wrap;
+  padding: 10px 4px;
 }
 
 .searchBox {
-  flex: 1;
-  background-color: #b1b6ba;
-  color: white;
-  border-radius: 5px;
+  background-color: #333;
+  border-radius: 4px;
 }
 
-button {
-  border-radius: 5px;
-  padding: 10px 20px;
-  background-color: #ff5722;
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 8px 4px;
 }
 
-button:disabled {
-  background-color: #b1b6ba;
-}
-
-@media (max-width: 768px) {
-  .search {
-    flex-direction: column;
-    gap: 15px;
-  }
+.empty {
+  color: #b3b3b3;
+  text-align: center;
+  padding: 40px 0;
 }
