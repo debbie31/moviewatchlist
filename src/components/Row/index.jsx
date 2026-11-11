@@ -13,7 +13,7 @@ import style from './style.module.css';
 const MAX_PAGES = 10;
 
 function Row({
-  title, path, params, slug, onSelect, onPlay,
+  title, path, params, slug, free, onSelect, onPlay,
 }) {
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
@@ -119,6 +119,7 @@ function Row({
               date={item.first_air_date || item.release_date}
               vote={item.vote_average}
               item={item}
+              free={free}
               onClick={() => onSelect(item)}
               onPlay={onPlay ? () => onPlay(item) : undefined}
             />
@@ -142,12 +143,14 @@ Row.propTypes = {
   path: PropTypes.string.isRequired,
   params: PropTypes.shape({}),
   slug: PropTypes.string.isRequired,
+  free: PropTypes.bool,
   onSelect: PropTypes.func.isRequired,
   onPlay: PropTypes.func,
 };
 
 Row.defaultProps = {
   params: {},
+  free: false,
   onPlay: undefined,
 };
 

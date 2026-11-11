@@ -4,16 +4,18 @@ import { useEffect, useState } from 'react';
 import Modal from '@mui/material/Modal';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
+import OndemandVideoRoundedIcon from '@mui/icons-material/OndemandVideoRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import {
   API_KEY,
   BASE_URL,
+  getWatchRegion,
   imgOriginal,
   unavailableLandscape,
 } from '../../config';
-import { trailerKeyFromDetails } from '../../api';
+import { directFreeLink, trailerKeyFromDetails } from '../../api';
 import { useMyList } from '../../context/MyListContext';
 import TrailerPlayer from '../TrailerPlayer';
 import style from './style.module.css';
@@ -75,8 +77,13 @@ function ContentModal({ item, onClose }) {
     .join(', ');
   const trailerKey = trailerKeyFromDetails(details);
 
-  const region = (navigator.language || 'en-US').split('-')[1] || 'US';
+  const region = getWatchRegion();
   const watch = providers?.[region];
+  const freeProviders = [...(watch?.free || []), ...(watch?.ads || [])];
+  const firstDirect = freeProviders
+    .map((p) => ({ provider: p, url: directFreeLink(p.provider_id, title) }))
+    .find((x) => x.url);
+  const freeWatchLink = firstDirect?.url || (freeProviders.length ? watch.link : null);
   const watchGroups = [
     { label: 'Free', list: watch?.free },
     { label: 'Free (ads)', list: watch?.ads },
@@ -103,6 +110,17 @@ function ContentModal({ item, onClose }) {
             <div className={style.titleBlock}>
               <h2 className={style.title}>{title}</h2>
               <div className={style.actions}>
+                {freeWatchLink && (
+                <a
+                  className={style.freeButton}
+                  href={freeWatchLink}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <OndemandVideoRoundedIcon />
+                  {firstDirect ? `Watch Free on ${firstDirect.provider.provider_name}` : 'Watch Free'}
+                </a>
+                )}
                 {trailerKey && (
                 <button
                   type="button"
@@ -159,7 +177,7 @@ function ContentModal({ item, onClose }) {
                       {group.list.map((p) => (
                         <a
                           key={p.provider_id}
-                          href={watch.link}
+                          href={directFreeLink(p.provider_id, title) || watch.link}
                           target="_blank"
                           rel="noreferrer"
                           title={p.provider_name}

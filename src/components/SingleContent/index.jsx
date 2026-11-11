@@ -14,6 +14,7 @@ function SingleContent({
   date,
   vote,
   item,
+  free,
   onClick,
   onPlay,
 }) {
@@ -47,12 +48,13 @@ function SingleContent({
             {vote.toFixed(1)}
           </span>
         )}
+        {free && <span className={style.freeBadge}>FREE</span>}
         {onPlay && (
           <span
             className={style.playBtn}
             role="button"
             tabIndex={-1}
-            aria-label={`Play ${title} trailer`}
+            aria-label={free ? `Watch ${title} free` : `Play ${title} trailer`}
             onClick={(e) => handleAction(e, onPlay)}
             onKeyDown={(e) => handleActionKey(e, onPlay)}
           >
@@ -100,6 +102,7 @@ SingleContent.propTypes = {
   item: PropTypes.shape({
     id: PropTypes.number.isRequired,
   }),
+  free: PropTypes.bool,
   onClick: PropTypes.func.isRequired,
   onPlay: PropTypes.func,
 };
@@ -109,6 +112,7 @@ SingleContent.defaultProps = {
   date: '',
   vote: 0,
   item: null,
+  free: false,
   onPlay: undefined,
 };
 

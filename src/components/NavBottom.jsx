@@ -3,11 +3,12 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import WhatshotOutlinedIcon from '@mui/icons-material/WhatshotOutlined';
 import MovieOutlinedIcon from '@mui/icons-material/MovieOutlined';
+import OndemandVideoOutlinedIcon from '@mui/icons-material/OndemandVideoOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-const ROUTES = ['/', '/movies', '/mylist', '/search'];
+const ROUTES = ['/', '/movies', '/browse/free', '/mylist', '/search'];
 
 export default function SimpleBottomNavigation() {
   const navigate = useNavigate();
@@ -44,6 +45,11 @@ export default function SimpleBottomNavigation() {
           style={{ color: '#e5e5e5' }}
           label="Movies"
           icon={<MovieOutlinedIcon />}
+        />
+        <BottomNavigationAction
+          style={{ color: '#e5e5e5' }}
+          label="Free"
+          icon={<OndemandVideoOutlinedIcon />}
         />
         <BottomNavigationAction
           style={{ color: '#e5e5e5' }}

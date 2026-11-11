@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { fetchFreeWatchLink } from '../../../api';
 import { API_KEY, BASE_URL } from '../../../config';
 import { useTrailerPlayer } from '../../../hooks/useTrailerPlayer';
 import ROWS from '../../../rows';
@@ -23,6 +24,18 @@ function Category() {
 
   const handlePlay = async (movie) => {
     if (!(await play(movie))) setSelected(movie);
+  };
+
+  const handleWatchFree = async (movie) => {
+    const win = window.open('', '_blank');
+    const link = await fetchFreeWatchLink(movie);
+    if (link) {
+      if (win) win.location.href = link;
+      else window.open(link, '_blank', 'noopener,noreferrer');
+    } else {
+      win?.close();
+      setSelected(movie);
+    }
   };
 
   useEffect(() => {
@@ -83,8 +96,9 @@ function Category() {
             date={movie.first_air_date || movie.release_date}
             vote={movie.vote_average}
             item={movie}
+            free={row.free}
             onClick={() => setSelected(movie)}
-            onPlay={() => handlePlay(movie)}
+            onPlay={() => (row.free ? handleWatchFree(movie) : handlePlay(movie))}
           />
         ))}
       </div>

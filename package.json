@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "server": "npm --prefix server run dev",
     "build": "vite build",
     "preview": "vite preview",
     "lint:fix": "eslint ./src --ext .jsx,.js --quiet --fix --ignore-path ./.gitignore"

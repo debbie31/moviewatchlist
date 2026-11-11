@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { fetchFreeWatchLink } from '../../../api';
 import { API_KEY, BASE_URL } from '../../../config';
 import { useTrailerPlayer } from '../../../hooks/useTrailerPlayer';
 import ROWS from '../../../rows';
@@ -42,6 +43,18 @@ function Trending() {
     if (!(await play(movie))) setSelected(movie);
   };
 
+  const handleWatchFree = async (movie) => {
+    const win = window.open('', '_blank');
+    const link = await fetchFreeWatchLink(movie);
+    if (link) {
+      if (win) win.location.href = link;
+      else window.open(link, '_blank', 'noopener,noreferrer');
+    } else {
+      win?.close();
+      setSelected(movie);
+    }
+  };
+
   return (
     <div className={style.home}>
       <Hero movie={featured} onSelect={setSelected} onPlay={handlePlay} />
@@ -53,8 +66,9 @@ function Trending() {
             path={row.path}
             params={row.params}
             slug={row.slug}
+            free={row.free}
             onSelect={setSelected}
-            onPlay={handlePlay}
+            onPlay={row.free ? handleWatchFree : handlePlay}
           />
         ))}
       </div>

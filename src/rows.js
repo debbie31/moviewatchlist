@@ -1,3 +1,5 @@
+import { getWatchRegion } from './config';
+
 const GENRE_PARAMS = { sort_by: 'popularity.desc' };
 
 const genreRow = (slug, title, withGenres) => ({
@@ -9,6 +11,17 @@ const genreRow = (slug, title, withGenres) => ({
 
 const ROWS = [
   { slug: 'trending', title: 'Trending Now', path: '/trending/movie/week' },
+  {
+    slug: 'free',
+    title: 'Free to Watch',
+    path: '/discover/movie',
+    params: {
+      sort_by: 'popularity.desc',
+      watch_region: getWatchRegion(),
+      with_watch_monetization_types: 'free|ads',
+    },
+    free: true,
+  },
   { slug: 'top-rated', title: 'Top Rated', path: '/movie/top_rated' },
   { slug: 'popular', title: 'Popular', path: '/movie/popular' },
   { slug: 'now-playing', title: 'Now Playing', path: '/movie/now_playing' },
