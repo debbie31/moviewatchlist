@@ -4,15 +4,18 @@ import { requireAuth } from '../middleware/auth.js';
 
 const router = Router();
 
+const asyncHandler = (fn) => (req, res, next) =>
+  Promise.resolve(fn(req, res, next)).catch(next);
+
 router.use(requireAuth);
 
-router.get('/', async (req, res) => {
+router.get('/', asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
   if (!user) return res.status(404).json({ message: 'User not found' });
   return res.json(user.myList);
-});
+}));
 
-router.post('/', async (req, res) => {
+router.post('/', asyncHandler(async (req, res) => {
   const movie = req.body;
   if (!movie || typeof movie.id !== 'number') {
     return res.status(400).json({ message: 'Movie with numeric id is required' });
@@ -26,10 +29,10 @@ router.post('/', async (req, res) => {
     await user.save();
   }
   return res.status(201).json(user.myList);
-});
+}));
 
 // Merge items saved while logged out into the user's list
-router.post('/merge', async (req, res) => {
+router.post('/merge', asyncHandler(async (req, res) => {
   const movies = Array.isArray(req.body?.movies) ? req.body.movies : [];
   const user = await User.findById(req.user.id);
   if (!user) return res.status(404).json({ message: 'User not found' });
@@ -44,9 +47,9 @@ router.post('/merge', async (req, res) => {
 
   await user.save();
   return res.json(user.myList);
-});
+}));
 
-router.delete('/:movieId', async (req, res) => {
+router.delete('/:movieId', asyncHandler(async (req, res) => {
   const movieId = Number(req.params.movieId);
   const user = await User.findById(req.user.id);
   if (!user) return res.status(404).json({ message: 'User not found' });
@@ -54,6 +57,6 @@ router.delete('/:movieId', async (req, res) => {
   user.myList = user.myList.filter((m) => m.id !== movieId);
   await user.save();
   return res.json(user.myList);
-});
+}));
 
 export default router;
