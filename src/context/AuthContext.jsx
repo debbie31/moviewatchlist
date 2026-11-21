@@ -21,9 +21,24 @@ const readStoredUser = () => {
   }
 };
 
+// Ignore a stored token once its expiry has passed so a returning
+// user starts logged out instead of failing on their next request.
+const readStoredToken = () => {
+  try {
+    const t = localStorage.getItem(TOKEN_KEY);
+    const { exp } = JSON.parse(atob(t.split('.')[1]));
+    return exp * 1000 > Date.now() ? t : null;
+  } catch {
+    return null;
+  }
+};
+
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(() => localStorage.getItem(TOKEN_KEY));
-  const [user, setUser] = useState(readStoredUser);
+  const [token, setToken] = useState(readStoredToken);
+  const [user, setUser] = useState(() => {
+    if (readStoredToken()) return readStoredUser();
+    return null;
+  });
 
   const persist = useCallback((data) => {
     setToken(data.token);

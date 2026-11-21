@@ -10,6 +10,23 @@ api.interceptors.request.use((cfg) => {
   return cfg;
 });
 
+// Session expired or token rejected — clear stored credentials and
+// send the user back to the login page. Skips unauthenticated calls
+// (e.g. a failed login attempt) which carry no Authorization header.
+api.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    if (err.response?.status === 401 && err.config?.headers?.Authorization) {
+      localStorage.removeItem('mw_token');
+      localStorage.removeItem('mw_user');
+      if (!window.location.pathname.startsWith('/login')) {
+        window.location.assign('/login');
+      }
+    }
+    return Promise.reject(err);
+  }
+);
+
 const pickTrailer = (videos) => {
   const youtube = (videos || []).filter((v) => v.site === 'YouTube');
   return (
